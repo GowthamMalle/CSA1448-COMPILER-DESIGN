@@ -1,0 +1,34 @@
+def is_comment(line):
+    line = line.strip()  # Strip leading/trailing whitespace
+    
+    # Check if the line contains a single-line comment (starting with //)
+    if line.startswith("//"):
+        return True  # It's a single-line comment
+    
+    # Check if the line contains a multi-line comment (starting with /* and ending with */)
+    if "/*" in line and "*/" in line:
+        # Check if it's a valid multi-line comment
+        return True  # It's a multi-line comment
+    
+    # Handle case where the line contains only the start of a multi-line comment
+    if "/*" in line:
+        return True  # Starting a multi-line comment
+    
+    # Handle case where the line contains only the end of a multi-line comment
+    if "*/" in line:
+        return True  # Ending a multi-line comment
+    
+    return False  # If none of the above, it's not a comment
+
+# Test the function with various lines
+test_lines = [
+    "// This is a single-line comment",
+    "int a = 5;", 
+    "/* This is a multi-line comment */",
+    "int b = 6; /* This is an inline multi-line comment */",
+    "Some code /* starts here",
+    "and ends here */ more code",
+]
+
+for line in test_lines:
+    print(f"Line: '{line}' -> Is Comment: {is_comment(line)}")

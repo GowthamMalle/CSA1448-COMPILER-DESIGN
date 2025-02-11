@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+char input[100];
+int pos = 0;
+
+void error() {
+    printf("Error in parsing\n");
+    exit(1);
+}
+
+void match(char expected) {
+    if (input[pos] == expected) {
+        pos++;
+    } else {
+        error();
+    }
+}
+
+void E();
+void T();
+void F();
+void P();
+
+// Recursive functions for parsing
+void E() {
+    printf("Evaluating Addition/Subtraction\n");
+    T();
+    while (input[pos] == '+' || input[pos] == '-') {
+        char op = input[pos];
+        pos++;
+        T();
+        printf("Performed %c operation\n", op);
+    }
+}
+
+void T() {
+    printf("Evaluating Multiplication/Division\n");
+    P();
+    while (input[pos] == '*' || input[pos] == '/') {
+        char op = input[pos];
+        pos++;
+        P();
+        printf("Performed %c operation\n", op);
+    }
+}
+
+void P() {
+    printf("Evaluating Exponentiation\n");
+    F();
+    while (input[pos] == '^') {
+        char op = input[pos];
+        pos++;
+        F();
+        printf("Performed %c operation\n", op);
+    }
+}
+
+void F() {
+    if (input[pos] == '(') {
+        printf("Evaluating Parentheses\n");
+        pos++;
+        E();
+        match(')');
+    } else if (input[pos] >= '0' && input[pos] <= '9') {
+        printf("Recognizing number: %c\n", input[pos]);
+        while (input[pos] >= '0' && input[pos] <= '9') {
+            pos++;
+        }
+    } else {
+        error();
+    }
+}
+
+int main() {
+    printf("Enter an expression: ");
+    scanf("%s", input);
+    E();
+    if (input[pos] == '\0') {
+        printf("Parsing successful. Expression follows PEMDAS order.\n");
+    } else {
+        error();
+    }
+    return 0;
+}

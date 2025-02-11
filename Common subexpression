@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_EXPRESSIONS 100
+
+typedef struct {
+    char expression[50];
+    char temp[10];
+} Expression;
+
+Expression exprTable[MAX_EXPRESSIONS];
+int exprCount = 0;
+
+void addExpression(char *expression, char *temp) {
+    for (int i = 0; i < exprCount; i++) {
+        if (strcmp(exprTable[i].expression, expression) == 0) {
+            printf("%s = %s\n", temp, exprTable[i].temp);
+            return;
+        }
+    }
+    strcpy(exprTable[exprCount].expression, expression);
+    strcpy(exprTable[exprCount].temp, temp);
+    printf("%s = %s\n", temp, expression);
+    exprCount++;
+}
+
+void optimize_code() {
+    char expression[50], temp[10];
+    printf("Enter expressions (type 'END' to finish):\n");
+    while (1) {
+        scanf("%s", expression);
+        if (strcmp(expression, "END") == 0) break;
+        sprintf(temp, "t%d", exprCount + 1);
+        addExpression(expression, temp);
+    }
+}
+
+int main() {
+    printf("Code Optimization: Eliminating Common Subexpressions\n");
+    optimize_code();
+    return 0;
+}

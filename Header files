@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int macro_count = 0, header_count = 0;
+
+void count_macros_and_headers(FILE *file) {
+    char line[256];
+    while (fgets(line, sizeof(line), file)) {
+        if (strncmp(line, "#define", 7) == 0) {
+            macro_count++;
+        } else if (strncmp(line, "#include", 8) == 0) {
+            header_count++;
+        }
+    }
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Usage: %s <filename>\n", argv[0]);
+        return 1;
+    }
+    FILE *file = fopen(argv[1], "r");
+    if (!file) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    count_macros_and_headers(file);
+    fclose(file);
+    printf("Number of macros defined: %d\n", macro_count);
+    printf("Number of header files included: %d\n", header_count);
+    return 0;
+}

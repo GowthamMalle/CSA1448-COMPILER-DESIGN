@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char input[100];
+int pos = 0;
+
+void error() {
+    printf("Error in parsing\n");
+    exit(1);
+}
+
+void match(char expected) {
+    if (input[pos] == expected) {
+        pos++;
+    } else {
+        error();
+    }
+}
+
+void E();
+void T();
+void F();
+
+// Recursive functions for parsing
+void E() {
+    T();
+    while (input[pos] == '+' || input[pos] == '-') {
+        pos++;
+        T();
+    }
+}
+
+void T() {
+    F();
+    while (input[pos] == '*' || input[pos] == '/') {
+        pos++;
+        F();
+    }
+}
+
+void F() {
+    if (input[pos] == '(') {
+        pos++;
+        E();
+        match(')');
+    } else if (input[pos] >= '0' && input[pos] <= '9') {
+        while (input[pos] >= '0' && input[pos] <= '9') {
+            pos++;
+        }
+    } else {
+        error();
+    }
+}
+
+int main() {
+    printf("Enter an expression: ");
+    scanf("%s", input);
+    E();
+    if (input[pos] == '\0') {
+        printf("Parsing successful\n");
+    } else {
+        error();
+    }
+    return 0;
+}

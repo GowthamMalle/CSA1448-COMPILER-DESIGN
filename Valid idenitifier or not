@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+// Function to check if a given identifier is valid
+int is_valid_identifier(char *identifier) {
+    if (!isalpha(identifier[0]) && identifier[0] != '_') {
+        return 0; // Identifier must start with a letter or underscore
+    }
+    for (int i = 1; identifier[i] != '\0'; i++) {
+        if (!isalnum(identifier[i]) && identifier[i] != '_') {
+            return 0; // Identifier can only contain letters, digits, and underscores
+        }
+    }
+    return 1;
+}
+
+int main() {
+    char identifier[100];
+    printf("Enter an identifier: ");
+    scanf("%99s", identifier);
+    
+    if (is_valid_identifier(identifier)) {
+        printf("Valid identifier.\n");
+    } else {
+        printf("Invalid identifier.\n");
+    }
+    
+    return 0;
+}

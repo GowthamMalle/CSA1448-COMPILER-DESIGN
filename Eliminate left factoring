@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <string.h>
+
+void eliminate_left_factoring(char *non_terminal, char productions[][100], int n) {
+    char common_prefix[100];
+    int prefix_length = strlen(productions[0]);
+    strcpy(common_prefix, productions[0]);
+    
+    for (int i = 1; i < n; i++) {
+        int j;
+        for (j = 0; j < prefix_length && productions[i][j] == common_prefix[j]; j++);
+        common_prefix[j] = '\0';
+        prefix_length = j;
+    }
+    
+    if (prefix_length == 0) {
+        printf("No left factoring needed for %s\n", non_terminal);
+        return;
+    }
+    
+    printf("%s -> %s%s'\n", non_terminal, common_prefix, non_terminal);
+    printf("%s' -> ", non_terminal);
+    for (int i = 0; i < n; i++) {
+        if (strncmp(productions[i], common_prefix, prefix_length) == 0) {
+            printf("%s", productions[i] + prefix_length);
+        } else {
+            printf("%s", productions[i]);
+        }
+        if (i < n - 1) {
+            printf(" | ");
+        }
+    }
+    printf(" | ε\n");
+}
+
+int main() {
+    char non_terminal;
+    printf("Enter the non-terminal: ");
+    scanf(" %c", &non_terminal);
+    
+    int n;
+    printf("Enter number of productions: ");
+    scanf("%d", &n);
+    
+    char productions[10][100];
+    printf("Enter productions (format: A->abc | abx | ay):\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%s", productions[i]);
+    }
+    
+    eliminate_left_factoring(&non_terminal, productions, n);
+    
+    return 0;
+}

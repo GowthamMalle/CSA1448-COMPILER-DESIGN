@@ -1,0 +1,44 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+int comment_count = 0;
+FILE *outfile;
+%}
+
+WHITE_SPACE    [ \t]+
+NEW_LINE       \n
+COMMENT        \/\*([^*]|\*+[^*/])*\*+\/|\/\/.*
+ANY_OTHER      .
+
+%%
+
+{COMMENT}      { comment_count++; }
+{WHITE_SPACE}  { fprintf(outfile, "%s", yytext); }
+{NEW_LINE}     { fprintf(outfile, "%s", yytext); }
+{ANY_OTHER}    { fprintf(outfile, "%s", yytext); }
+
+%%
+
+int main(int argc, char *argv[]) {
+    FILE *infile;
+    if (argc != 3) {
+        printf("Usage: %s <inputfile> <outputfile>\n", argv[0]);
+        return 1;
+    }
+    infile = fopen(argv[1], "r");
+    outfile = fopen(argv[2], "w");
+    if (!infile || !outfile) {
+        printf("Error opening files!\n");
+        return 1;
+    }
+    yyin = infile;
+    yylex();
+    fclose(infile);
+    fclose(outfile);
+    printf("Number of comment lines removed: %d\n", comment_count);
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}

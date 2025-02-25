@@ -1,0 +1,31 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+
+int positive_count = 0, negative_count = 0;
+%}
+
+POSITIVE [0-9]+(\.[0-9]+)?
+NEGATIVE -[0-9]+(\.[0-9]+)?
+WHITESPACE [ \t\n]+
+
+%%
+
+{NEGATIVE}  { printf("Negative Number: %s\n", yytext); negative_count++; }
+{POSITIVE}  { printf("Positive Number: %s\n", yytext); positive_count++; }
+{WHITESPACE} { /* Ignore whitespace */ }
+.           { printf("Unknown Token: %s\n", yytext); }
+
+%%
+
+int main() {
+    printf("Enter numbers in a statement:\n");
+    yylex();
+    printf("Total Positive Numbers: %d\n", positive_count);
+    printf("Total Negative Numbers: %d\n", negative_count);
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}

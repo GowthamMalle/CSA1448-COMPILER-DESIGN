@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <string.h>
+
+void convertSubstring(char *str) {
+    char *pos = strstr(str, "abc"); // Find the substring "abc"
+    while (pos != NULL) {
+        // Convert "abc" to "ABC"
+        pos[0] = 'A';
+        pos[1] = 'B';
+        pos[2] = 'C';
+        
+        // Find the next occurrence of "abc"
+        pos = strstr(pos + 3, "abc");
+    }
+}
+
+int main() {
+    char str[100];
+    printf("Enter a string: ");
+    fgets(str, sizeof(str), stdin);
+    
+    // Remove the newline character if present
+    str[strcspn(str, "\n")] = 0;
+    
+    convertSubstring(str);
+    
+    printf("Modified string: %s\n", str);
+    return 0;
+}

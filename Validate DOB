@@ -1,0 +1,26 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+%}
+
+// Define Date of Birth (DOB) pattern in DD-MM-YYYY format
+DOB [0-3][0-9]-[0-1][0-9]-[0-9]{4}
+WHITESPACE [ \t\n]+
+
+%%
+
+{DOB}       { printf("Valid DOB: %s\n", yytext); }
+{WHITESPACE} { /* Ignore whitespace */ }
+.           { printf("Invalid Token: %s\n", yytext); }
+
+%%
+
+int main() {
+    printf("Enter a DOB (DD-MM-YYYY) to validate:\n");
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}

@@ -1,0 +1,26 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+%}
+
+// Define URL pattern
+URL (http|https)://[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}(/[a-zA-Z0-9._-]*)*
+WHITESPACE [ \t\n]+
+
+%%
+
+{URL}       { printf("Valid URL: %s\n", yytext); }
+{WHITESPACE} { /* Ignore whitespace */ }
+.           { printf("Invalid Token: %s\n", yytext); }
+
+%%
+
+int main() {
+    printf("Enter a URL to validate:\n");
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}

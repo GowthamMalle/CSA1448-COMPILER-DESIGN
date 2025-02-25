@@ -1,0 +1,26 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+%}
+
+// Define pattern for a single digit
+DIGIT [0-9]
+WHITESPACE [ \t\n]+
+
+%%
+
+{DIGIT}      { printf("Valid Digit: %s\n", yytext); }
+{WHITESPACE} { /* Ignore whitespace */ }
+.           { printf("Invalid Input: %s\n", yytext); }
+
+%%
+
+int main() {
+    printf("Enter a character to check if it is a digit:\n");
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}

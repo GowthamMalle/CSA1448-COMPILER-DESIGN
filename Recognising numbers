@@ -1,0 +1,28 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+%}
+
+NUMBER [0-9]+
+WORD [a-zA-Z]+
+WHITESPACE [ \t\n]+
+
+%%
+
+{NUMBER}    { printf("Number: %s\n", yytext); }
+{WORD}      { printf("Word: %s\n", yytext); }
+{WHITESPACE} { /* Ignore whitespace */ }
+.           { printf("Unknown Token: %s\n", yytext); }
+
+%%
+
+int main() {
+    printf("Enter a statement:\n");
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}

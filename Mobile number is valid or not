@@ -1,0 +1,26 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+%}
+
+DIGIT [0-9]
+VALID_MOBILE [6-9]{1}{DIGIT}{9}  // Starts with 6-9 and has exactly 10 digits
+
+%%
+
+{VALID_MOBILE}   { printf("Valid mobile number: %s\n", yytext); }
+{DIGIT}+         { printf("Invalid mobile number: %s\n", yytext); }
+.                { /* Ignore other characters */ }
+
+%%
+
+int main() {
+    printf("Enter mobile numbers (separated by spaces/new lines, CTRL+D to end):\n");
+    yylex();
+    return 0;
+}
+
+int yywrap() {
+    return 1;
+}
